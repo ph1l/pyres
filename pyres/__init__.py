@@ -219,6 +219,13 @@ class ResQ(object):
         else:
             logger.warning("unable to enqueue job with class %s" % str(klass))
 
+    def enqueue_specific(self, klass, queue, *args):
+		"""Enqueue a job into a specific queue. Really.
+
+		"""
+		class_name = '%s.%s' % (klass.__module__, klass.__name__)
+		self.enqueue_from_string(class_name, queue, *args)
+
     def enqueue_from_string(self, klass_as_string, queue, *args, **kwargs):
         payload = {'class':klass_as_string, 'args':args, 'enqueue_timestamp': time.time()}
         if 'first_attempt' in kwargs:
